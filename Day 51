@@ -1,0 +1,91 @@
+import os, time
+
+print("To Do List")
+print()
+
+toDo = []
+
+# this is the new loading part, loading the to do list file, the file needs to exist before running the load 
+# if no file is already there comment out the autoloading part on the first run 
+f = open("ToDo.txt","r")
+toDo = eval(f.read())
+f.close()
+# above is the autoloading
+#
+
+def pp():
+  for row in toDo:
+    for item in row:
+      print(item, end="\t|\t")
+    print()
+
+while True:  
+  menu = input("Would you like to Add, View, Edit or Remove a 'To Do'?: ").strip().capitalize()
+  time.sleep(1)
+  os.system("clear")
+
+  if menu == "Add":
+    name = input("Name: ").strip().title()
+    date = input("Date: ").strip().title()
+    priority = input("High, Medium or Low priority? ").strip().title()
+    row = [name, date, priority]
+    toDo.append(row)
+    pp()
+    time.sleep(2)
+    os.system("clear")
+
+
+  if menu == "Edit":
+    edit = input("The name of the 'To Do' to be edited: ").strip().title()
+    for i in range(len(toDo)):
+      if toDo[i][0]== edit:
+        pp()
+        eItem = input("Edit the Name, Date, or Priority(N/D/P): ").strip().upper()
+        if eItem == "N":
+            newName = input("What is the new Name: ").strip().title()
+            toDo[i][0] = newName
+        elif eItem == "D":
+              newDate = input("What is the new Date: ").strip().title()
+              toDo[i][1] = newDate
+        elif eItem == "P":
+              newPrior = input("What is the new Priority: ").strip().title()
+              toDo[i][2] = newPrior
+        pp()
+        time.sleep(2)
+        os.system("clear")
+
+  if menu == "Remove": 
+    remove = input("The name of the 'To Do' to be removed: ").strip().title()
+    for i in range(len(toDo)):
+      if toDo[i][0]== remove:
+        print("\nItem to remove: ")
+        for item in toDo[i]:
+          print(f"{item}", end="\t|\t")
+        print()
+        confirm = input("\nAre you sure you want to remove this item? (Y/N)").strip().title()
+        if confirm == "Y":
+          toDo.remove(toDo[i])
+        else:
+          continue
+      time.sleep(2)
+      os.system("clear")
+
+  if menu == "View":
+    how = input("Would you like to view? All or by Priority (A/P): ").strip().capitalize()
+    if how =="P":
+      level = input("High, Medium or Low? ").strip().title()
+      for row in toDo:
+        if row[2] == level:
+          for item in row:
+            print(f"{item}", end="\t|\t")
+          print()
+
+    elif how == "A":
+      pp()
+      time.sleep(2)
+      os.system("clear")
+
+# this is the new saving part, saving the list to a file
+  f = open("ToDo.txt", "w")
+  f.write(str(toDo))
+  f.close()
